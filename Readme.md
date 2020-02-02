@@ -12,12 +12,14 @@ Una vez instalado, agregamos ciertas caracteristicas como los guest aditions.
 
 Dentro de Ubuntu, abrimos una ventana de comandos y agregamos los siguientes comandos:
 
-- sudo apt get
-- sudo apt upgrade
+```
+sudo apt get
+sudo apt upgrade
+```
 
 Luego verificamos si la maquina virtual tiene disponible la virtualizacion con el siguiente comando
 
-- cat /proc/cpuinfo| egrep "vmx|svm"
+`cat /proc/cpuinfo| egrep "vmx|svm"`
 
 Ahora vamos a instalar docker, buscamos en google [install docker ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/), ahi nos indica que comandos lanzar
 
