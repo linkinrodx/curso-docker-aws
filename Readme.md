@@ -64,12 +64,16 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 probamos que se haya instalado correctamente con
 
-```docker ps```
+```
+docker ps
+```
 
 Para tener acceso a nuestro usuario a docker, lanzamos el siguiente comando
 Añadir un nuevo grupo al usuario
 
-```usermod -a -G docker rodrigo```
+```
+usermod -a -G docker rodrigo
+```
 
 reiniciamos nuestra maquina y probamos que podemos consultar docker desde la raiz
 
@@ -85,11 +89,15 @@ nos descarga el binario en la raiz
 
 probamos ejecutarlo
 
-```./kubectl```
+```
+./kubectl
+```
 
 pero nos da denegacion de permiso, debemos acceder al permiso
 
-```chmod +x kubectl```
+```
+chmod +x kubectl
+```
 
 ahora probamos y vemos la configuracion, tambien podemos ver la version
 
@@ -100,7 +108,9 @@ ahora probamos y vemos la configuracion, tambien podemos ver la version
 
 movemos el binario la carpeta de binarios
 
-```mv kubectl /usr/local/bin/```
+```
+mv kubectl /usr/local/bin/
+```
 
 Ahora instalamos [minikube](https://kubernetes.io/es/docs/tasks/tools/install-minikube/)
 
@@ -113,7 +123,9 @@ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/miniku
 
 movemos el binario a la carpeta de binarios
 
-```sudo mv minikube /usr/local/bin```
+```
+sudo mv minikube /usr/local/bin
+```
 
 probamos que todo este correcto
 
@@ -130,7 +142,9 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-
 
 damos permisos de acceso
 
-```sudo chmod +x docker-compose```
+```
+sudo chmod +x docker-compose
+```
 
 verificamos el acceso
 
@@ -149,11 +163,15 @@ curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "aws
 
 nos descarga un zip, lo descomprimimos
 
-```unzip awscliv2.zip```
+```
+unzip awscliv2.zip
+```
 
 instalamos el ejecutable descomprimido
 
-```sudo ./aws/install```
+```
+sudo ./aws/install
+```
 
 probamos
 
@@ -164,15 +182,21 @@ aws2 --version
 
 como ya esta instalado, eliminamos el archivo zip y la carpeta descomrimida
 
-```rm -rf aws*```
+```
+rm -rf aws*
+```
 
 ahora nos ubicamos en la carpeta de binarios
 
-```cd /usr/local/bin```
+```
+cd /usr/local/bin
+```
 
 vamos a crear un enlace directo a aws2
 
-```sudo ln -s aws2 aws```
+```
+sudo ln -s aws2 aws
+```
 
 se creo el enlace y probamos
 
