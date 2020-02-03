@@ -206,3 +206,265 @@ aws --version
 ```
 
 y asi tenemos configurado nuestro entorno :)
+
+## Creamos nuestra primera imagen de docker
+
+
+creamos nuestro dockerfile
+
+```
+from Ubuntu:12.04
+
+run apt-get update
+run apt-get install nginx -y
+run echo "hello world" > /var/www/html/index.html
+
+cmd nginx -g 'daemon off;'
+
+```
+creamos nuesra imagen
+
+```
+docker build .
+```
+
+verificamos que se haya creado
+
+```
+docker images
+```
+
+eliminamos nuestra imagen
+
+```
+docker image rm (codigounicodeimagen)
+```
+
+volvemos a crear nuestra imagen y le agregamos un nombre y tag
+
+```
+docker build -t helloworld:1.0 .
+```
+
+agregamos un nuevo tag a nuestra imagen
+
+```
+docker tag helloworld:1.0 helloworld:latest
+```
+
+probamos
+
+```
+docker images
+```
+
+ahora vamos a ver los metadatos de nuestra imagen
+
+```
+docker inspect helloworld:latest
+```
+
+## Ciclo de vida de un contenedor
+
+creamos un contenedor en base a la imagen creada anteriormente
+
+docker create helloworld:latest
+
+al crear el contenedor, se crea con un nombre aleatorio
+
+```
+docker ps
+```
+
+no vemos todavia nuestro contenedor
+
+```
+docker ps -a
+```
+
+vemos nuestro contenedor que esta parado
+
+```
+docker start (codigo unico)
+docker ps
+```
+
+vemos el contenedor corriendp
+
+paramos el contenedor
+
+```
+docjer stop (codigo unico)
+docke ps
+```
+
+no hay contenedor
+
+volvemos a cargarlo
+
+```
+docker start (nombre aleatorio del contenedor)
+```
+
+primero paramos el contenedor para luego eliminarlo
+
+```
+docker stop (nombre aleatorio del contenedor)
+docker rm (nombre aleatorio del contenedor)
+```
+
+si deseamos eliminar su imagen
+
+```
+docker image rm (codigo unico)
+```
+
+ahora creamos un contenedor y le vamos a asignar un nombre
+
+```
+docker create --name web01 helloworld:latest
+```
+
+verificamos
+
+```
+docker ps -a
+```
+
+hacemos prueba con nuestro nuevo contenedor
+
+```
+docker start web01
+docker stop web01
+docker rm web01
+```
+
+## exponer puertos
+
+inspeccionamos nuestro contenedor
+
+```
+docker inspect web01
+```
+
+vemos en nuestra metadata la configuracion del contenedor, por ahora nos fijamos en la direccion ip de nuestro contenedor
+
+accedemos a los puertos de nuestro contenedor a través de esta ip que esta en la configuracion de la imagen
+
+hacemos una prueba en el puerto 80
+
+```
+curl 172.17.0.2
+```
+
+por ahora el contenedor no es accesible desde fuera del host
+
+eliminamos el contenedor para hacer unas prueba
+
+```
+docker rm web01 -f
+```
+
+volvemos a crear nuestro contenedor, pero ahora con una configuracion diferente
+
+```
+docker create -p 8080:80 --name web01 helloworld:latest
+```
+
+con esto ahora accedemos al puerto 80 expuesto de nuestro contenedor desde el puerto 8080 de nuestro host
+
+```
+docker start web01
+docker inspect web01
+```
+
+vemos que la ip se mantiene
+
+```
+curl 127.17.0.2
+curl localhost:8080
+```
+
+accedemos normalmente desde nuestro host
+
+hacemos una nueva prueba
+
+```
+docker rm web01 -f
+docker create -p 127.0.0.1:8080:80 --name web01 helloworld:latest
+```
+
+ahora accedemos solo desde la ip 127.0.0.1 al puerto 80 de nuestro contenedor
+
+```
+docker start web01
+```
+
+verificamos
+
+```
+curl localhost:8080
+```
+
+ahora hagamos una nueva prueba
+
+```
+docker rm web -f
+```
+
+modificamos nuestro dockerfile agregamos la siguiente linea de codigo
+
+```
+EXPOSE 80
+```
+
+volvemos a crear la imagen
+
+```
+docker build -t helloworld:1.0
+docker tag helloworld:latest helloworld:1.0
+```
+
+veamos el resultado de nuestra nueva configuracion
+
+```
+docker image inspect helloworld:latest
+```
+
+vemos los puesrtos expuestos "EXPOSEDPORTS"
+
+ahora vamos a publicar sobre los puertos expuestos de nuestra imagen "PUBLISH ALL"
+
+```
+docker create -P --name web01 helloworld:latest
+docker start
+docker ps
+```
+
+vemos que en la columna puertos se va a mapear el puerto 80 a un puerto random
+
+```
+docker stop web01
+docker start web01
+docker ps
+```
+
+ahora vemos que se ha mapeado nuestro contenedor con otro puerto del host
+
+```
+curl localhost:32769
+```
+
+este rango de puertos es configurable desde 
+
+```
+cat /proc/sys/net/ipv4/ip_local_port_range
+```
+
+vemos que tiene un rango desde 32768 al 68999 (este depende de la version del linux), el proceso que se encarga de estos mapeos se llama docker proxy
+
+```
+ps aux|grep docker-proxy
+```
+
+este es el proceso que se va a encargar las reglas de ip tables
