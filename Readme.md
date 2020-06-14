@@ -2,7 +2,7 @@
 
 link del [curso](https://www.udemy.com/course/kubernetes-y-docker-en-aws-desde-cero/)
 
-## Primer Paso
+## Primer Paso: Configuracion de Entorno
 
 lo primero que necessitamos es crear el entorno de desarrollo, para eso instalamos [ubuntu](https://ubuntu.com/#download) en una maquina virtual (ej: [virtualbox](https://www.virtualbox.org/wiki/Downloads))
 
@@ -339,7 +339,7 @@ docker stop web01
 docker rm web01
 ```
 
-## exponer puertos
+## Exponer Puertos
 
 inspeccionamos nuestro contenedor
 
